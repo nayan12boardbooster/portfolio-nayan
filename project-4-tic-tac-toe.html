@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic Tac Toe | Nayan Gupta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg: #05070b;
+      --panel: rgba(15, 23, 42, 0.8);
+      --panel-strong: #111827;
+      --cyan: #00f0ff;
+      --purple: #9d4edd;
+      --emerald: #10b981;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --line: rgba(148, 163, 184, 0.2);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Inter, sans-serif;
+      background: radial-gradient(circle at top, rgba(16, 185, 129, 0.12), transparent 40%), var(--bg);
+      color: var(--text);
+      padding: 20px;
+    }
+    .game-box {
+      width: min(100%, 540px);
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.08);
+      backdrop-filter: blur(12px);
+    }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .title {
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      font-weight: 900;
+      margin: 0;
+    }
+    .status {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .score {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+    .score span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+    }
+    .score strong {
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .cell {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text);
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .cell:hover {
+      transform: translateY(-2px);
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+    .cell.x { color: var(--cyan); }
+    .cell.o { color: var(--purple); }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .controls button {
+      flex: 1;
+      min-width: 120px;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .reset {
+      background: linear-gradient(90deg, var(--cyan), #38bdf8);
+      color: #020617;
+    }
+    .back {
+      background: rgba(15, 23, 42, 0.78);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    @media (max-width: 560px) {
+      .game-box { padding: 18px; }
+      .scoreboard { grid-template-columns: repeat(3, minmax(70px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-box">
+    <div class="top-row">
+      <h1 class="title">Tic Tac Toe</h1>
+      <div id="status" class="status">Player X's turn</div>
+    </div>
+
+    <div class="scoreboard">
+      <div class="score"><span>X</span><strong id="score-x">0</strong></div>
+      <div class="score"><span>Draw</span><strong id="score-draw">0</strong></div>
+      <div class="score"><span>O</span><strong id="score-o">0</strong></div>
+    </div>
+
+    <div class="board" id="board">
+      <button class="cell" data-index="0" aria-label="Cell 1"></button>
+      <button class="cell" data-index="1" aria-label="Cell 2"></button>
+      <button class="cell" data-index="2" aria-label="Cell 3"></button>
+      <button class="cell" data-index="3" aria-label="Cell 4"></button>
+      <button class="cell" data-index="4" aria-label="Cell 5"></button>
+      <button class="cell" data-index="5" aria-label="Cell 6"></button>
+      <button class="cell" data-index="6" aria-label="Cell 7"></button>
+      <button class="cell" data-index="7" aria-label="Cell 8"></button>
+      <button class="cell" data-index="8" aria-label="Cell 9"></button>
+    </div>
+
+    <div class="controls">
+      <button class="reset" id="reset-btn">Reset Game</button>
+      <a href="Nayan-Portfolio.html" class="back" style="display:flex; align-items:center; justify-content:center; text-decoration:none;">Back</a>
+    </div>
+  </div>
+
+  <script>
+    const cells = [...document.querySelectorAll('.cell')];
+    const statusEl = document.getElementById('status');
+    const scoreXEl = document.getElementById('score-x');
+    const scoreOEl = document.getElementById('score-o');
+    const scoreDrawEl = document.getElementById('score-draw');
+
+    let board = Array(9).fill('');
+    let currentPlayer = 'X';
+    let gameOver = false;
+    let score = { X: 0, O: 0, draw: 0 };
+
+    const winPatterns = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+
+    function setStatus(message) {
+      statusEl.textContent = message;
+    }
+
+    function updateScores() {
+      scoreXEl.textContent = score.X;
+      scoreOEl.textContent = score.O;
+      scoreDrawEl.textContent = score.draw;
+    }
+
+    function checkWinner() {
+      for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return board[a];
+        }
+      }
+      return null;
+    }
+
+    function handleCellClick(event) {
+      const index = Number(event.target.dataset.index);
+      if (board[index] || gameOver) return;
+
+      board[index] = currentPlayer;
+      event.target.textContent = currentPlayer;
+      event.target.classList.add(currentPlayer.toLowerCase());
+
+      const winner = checkWinner();
+      if (winner) {
+        score[winner] += 1;
+        gameOver = true;
+        setStatus(`Player ${winner} wins!`);
+        updateScores();
+        return;
+      }
+
+      if (board.every(cell => cell)) {
+        score.draw += 1;
+        gameOver = true;
+        setStatus('Draw game!');
+        updateScores();
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      setStatus(`Player ${currentPlayer}'s turn`);
+    }
+
+    function resetBoard() {
+      board = Array(9).fill('');
+      currentPlayer = 'X';
+      gameOver = false;
+      cells.forEach(cell => {
+        cell.textContent = '';
+        cell.classList.remove('x', 'o');
+      });
+      setStatus("Player X's turn");
+    }
+
+    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    document.getElementById('reset-btn').addEventListener('click', resetBoard);
+    updateScores();
+  </script>
+</body>
+</html>

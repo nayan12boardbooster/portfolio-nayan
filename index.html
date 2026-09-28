@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO & OpenGraph Meta -->
+  <title>Nayan Gupta | Cinematic Portfolio &amp; Creative Developer</title>
+  <meta name="description" content="Official cinematic interactive portfolio of Nayan Gupta — B.Tech Computer Science &amp; Engineering developer specializing in modern frontend systems, C++, and Python." />
+  <meta name="keywords" content="Nayan Gupta, Portfolio, B.Tech CSE, Frontend Developer, Web Development, C++, Python, Data Structures and Algorithms, Hackathon" />
+  <meta name="author" content="Nayan Gupta" />
+  
+  <meta property="og:title" content="Nayan Gupta | B.Tech CSE &amp; Creative Developer" />
+  <meta property="og:description" content="Cinematic interactive portfolio featuring a 240-frame visual journey, modern engineering showcases, and computational builds." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Nayan Image.jpg" />
+
+  <!-- Google Fonts: Outfit (Display), Inter (Body), Fira Code (Technical) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Bespoke Cinematic Styling -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================================================================
+       CINEMATIC LOADING SCREEN
+       =================================================================== -->
+  <div class="loading-screen" id="loading-screen" aria-label="Loading Portfolio" role="status">
+    <!-- Animated grid background -->
+    <div class="loader-grid" aria-hidden="true"></div>
+
+    <!-- Corner brackets -->
+    <div class="loader-corner loader-corner-tl" aria-hidden="true"></div>
+    <div class="loader-corner loader-corner-tr" aria-hidden="true"></div>
+    <div class="loader-corner loader-corner-bl" aria-hidden="true"></div>
+    <div class="loader-corner loader-corner-br" aria-hidden="true"></div>
+
+    <!-- Scan line -->
+    <div class="loader-scanline" aria-hidden="true"></div>
+
+    <!-- Center Content -->
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="loader-name-first">NAYAN</span>
+        <span class="loader-name-last">GUPTA</span>
+      </div>
+      <div class="loader-tagline">B.TECH CSE &bull; DEVELOPER &bull; EXPLORER</div>
+
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-track">
+          <div class="loader-bar-fill" id="loader-bar-fill"></div>
+        </div>
+        <span class="loader-pct" id="loader-pct">0%</span>
+      </div>
+
+      <div class="loader-status" id="loader-status">INITIALIZING SYSTEM...</div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       PINNED VIEWPORT CANVAS (240-FRAME SCROLLING CORE)
+       =================================================================== -->
+  <div class="canvas-container" id="canvas-container" aria-hidden="true">
+    <canvas id="sequence-canvas"></canvas>
+  </div>
+
+  <!-- Cinematic Vignette & Atmospheric Contrast Layers -->
+  <div class="cinematic-vignette" aria-hidden="true"></div>
+  <div class="cinematic-mesh" aria-hidden="true"></div>
+
+  <!-- ===================================================================
+       MINIMAL FLOATING NAVBAR
+       =================================================================== -->
+  <header class="navbar" id="navbar">
+    <a href="#hero" class="nav-brand" id="brand-link" aria-label="Nayan Gupta Home">
+      <span class="brand-name">Nayan Gupta</span>
+      <span class="brand-tag">B.Tech CSE</span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav aria-label="Main Navigation">
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Intro</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#journey" class="nav-link">Journey</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Nav Actions -->
+    <div class="nav-actions">
+      <!-- Connect CTA -->
+      <a href="#contact" class="nav-cta">
+        <span>Connect</span>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation Drawer">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="#hero" class="mobile-link">Intro</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#skills" class="mobile-link">Skills</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#journey" class="mobile-link">Journey</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       FLOATING STORY HUD & SCRUBBER
+       =================================================================== -->
+  <div class="story-hud" id="story-hud" aria-live="polite">
+    <span class="hud-chapter" id="hud-chapter">00 // INCEPTION</span>
+    <span class="hud-divider"></span>
+    <div class="hud-progress-wrap">
+      <div class="hud-track">
+        <div class="hud-bar" id="hud-bar"></div>
+      </div>
+      <span class="hud-percentage" id="hud-percentage">0%</span>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MAIN SCROLLING STORYTELLING TIMELINE
+       =================================================================== -->
+  <main class="story-scroll-container" id="story-scroll-container">
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 0: PROLOGUE / HERO (0% - 15%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter hero-prologue" id="hero">
+      <div class="hero-split-stage">
+        
+        <!-- Left Flank: Identity, Name & Terminal -->
+        <div class="hero-flank hero-flank-left glass-panel">
+          <div class="hero-status-pill">
+            <span class="status-dot"></span>
+            <span>B.TECH CSE '29 // HACKATHON READY</span>
+          </div>
+
+          <h1 class="hero-monumental-name">
+            <span class="name-first">NAYAN</span>
+            <span class="name-last gradient-text-cyan-red">GUPTA</span>
+          </h1>
+
+          <div class="hero-role-subhead">
+            B.Tech CSE Student • Developer • Explorer
+          </div>
+
+          <!-- Dynamic Typewriter HUD -->
+          <div class="hero-typewriter-box">
+            <span class="terminal-prompt">&gt;</span>
+            <span id="typewriter-output"></span>
+            <span class="cursor-blink"></span>
+          </div>
+
+          <div class="hero-tech-quick-stack">
+            <span class="tech-micro-pill"><i class="fa-solid fa-code"></i> C++</span>
+            <span class="tech-micro-pill"><i class="fa-brands fa-python"></i> Python</span>
+            <span class="tech-micro-pill"><i class="fa-brands fa-js"></i> JavaScript</span>
+            <span class="tech-micro-pill"><i class="fa-brands fa-git-alt"></i> Git</span>
+            <span class="tech-micro-pill"><i class="fa-solid fa-brain"></i> DSA</span>
+          </div>
+        </div>
+
+        <!-- Center Viewport: Completely Unobstructed for Nayan's Face -->
+        <div class="hero-center-viewport" aria-hidden="true"></div>
+
+        <!-- Right Flank: Vision, Metrics & Action Launchers -->
+        <div class="hero-flank hero-flank-right glass-panel">
+          <div class="flank-header-tag">
+            <i class="fa-solid fa-compass"></i>
+            <span>00 // MISSION &amp; VISION</span>
+          </div>
+
+          <p class="hero-statement">
+            Building ideas into interactive digital experiences. Fusing disciplined computational foundations with immersive modern web design and clean engineering architecture.
+          </p>
+
+          <div class="flank-metrics-grid">
+            <div class="flank-metric-item">
+              <span class="flank-metric-num">2023</span>
+              <span class="flank-metric-lbl">Inception</span>
+            </div>
+            <div class="flank-metric-item">
+              <span class="flank-metric-num">6+</span>
+              <span class="flank-metric-lbl">Live Builds</span>
+            </div>
+            <div class="flank-metric-item">
+              <span class="flank-metric-num">100%</span>
+              <span class="flank-metric-lbl">Velocity</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-row">
+            <a href="#projects" class="btn-primary" id="btn-hero-projects">
+              <span>EXPLORE MISSIONS</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+            <a href="#contact" class="btn-secondary" id="btn-hero-contact">
+              <i class="fa-solid fa-satellite-dish"></i>
+              <span>INITIATE CONTACT</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 1: IDENTITY & ARCHITECTURE (15% - 32%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter chapter-identity" id="about">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-microchip"></i> 01 // ARCHITECTURE &amp; BACKGROUND</span>
+        <h2 class="section-title">Curiosity, Rigor &amp; <span class="gradient-text-cyan-red">Modern Systems</span></h2>
+        <p class="section-subtitle">
+          A first-year Computer Science engineer obsessed with understanding how complex software systems operate from bottom-level memory pointers to high-framerate interactive user interfaces.
+        </p>
+      </div>
+
+      <div class="identity-grid">
+        <!-- Narrative Card -->
+        <div class="glass-panel identity-narrative-card">
+          <div>
+            <h3 class="identity-narrative-title">Disciplined Logic Meets Modern Web</h3>
+            <p class="identity-narrative-p">
+              Currently pursuing a B.Tech in Computer Science and Engineering ('29). My focus spans rigorous computational thinking in C++ and Python, Data Structures &amp; Algorithms, and designing high-performance modern web interfaces.
+            </p>
+            <p class="identity-narrative-p">
+              Whether dissecting algorithmic complexities or architecting interactive browser canvas pipelines, I believe the best software is both computationally sound and visually captivating.
+            </p>
+          </div>
+
+          <div class="identity-metrics-row">
+            <div class="metric-box">
+              <span class="metric-num">2023</span>
+              <span class="metric-label">Inception</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num">6+</span>
+              <span class="metric-label">Live Builds</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-num">100%</span>
+              <span class="metric-label">Hackathon Drive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillars Stack -->
+        <div class="identity-pillars-stack">
+          <div class="glass-panel pillar-card-compact">
+            <div class="pillar-icon-ring">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h4 class="pillar-heading">Computer Science Scholar</h4>
+              <p class="pillar-text">
+                Building disciplined foundations in C++, Object-Oriented Design, and Data Structures &amp; Algorithms (DSA) to write clean, maintainable, and scalable software.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-panel pillar-card-compact">
+            <div class="pillar-icon-ring red">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div>
+              <h4 class="pillar-heading">Modern Web &amp; Frontend Creator</h4>
+              <p class="pillar-text">
+                Crafting high-framerate web applications leveraging vanilla CSS design systems, modern ES6+ JavaScript, interactive canvas pipelines, and glassmorphic UI.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-panel pillar-card-compact">
+            <div class="pillar-icon-ring emerald">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div>
+              <h4 class="pillar-heading">Hackathon MVP Builder</h4>
+              <p class="pillar-text">
+                Thriving in high-velocity collaborative environments. Translating ideas into functional MVPs that pitch well and solve real-world problems.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 2: TECHNICAL ARSENAL / SKILLS (32% - 48%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter chapter-arsenal" id="skills">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-code"></i> 02 // TECHNICAL ARSENAL</span>
+        <h2 class="section-title">Engineered <span class="gradient-text-cyan">Capabilities</span></h2>
+        <p class="section-subtitle">
+          Real proficiencies cultivated through hands-on project building, algorithmic problem solving, and interactive 3D web experimentation. Select any technology to inspect details.
+        </p>
+      </div>
+
+      <div class="skills-interactive-container">
+        <!-- Capsules Grid -->
+        <div class="skills-capsules-grid" id="skills-capsules-grid">
+          <!-- Skill: HTML5 -->
+          <div class="skill-capsule-item active" data-skill-id="html5">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-brands fa-html5 skill-capsule-icon" style="color: #ff5722;"></i>
+                <span class="skill-capsule-name">HTML5</span>
+              </div>
+              <span class="skill-capsule-badge">Architectural</span>
+            </div>
+            <p class="skill-capsule-brief">Semantic DOM, Web Accessibility (A11y), clean document hierarchies, and SEO standards.</p>
+          </div>
+
+          <!-- Skill: CSS3 -->
+          <div class="skill-capsule-item" data-skill-id="css3">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-brands fa-css3-alt skill-capsule-icon" style="color: #2196f3;"></i>
+                <span class="skill-capsule-name">CSS3 &amp; Glassmorphism</span>
+              </div>
+              <span class="skill-capsule-badge">Responsive</span>
+            </div>
+            <p class="skill-capsule-brief">Responsive Grid/Flexbox, custom CSS variables, keyframe physics, and 3D matrix transforms.</p>
+          </div>
+
+          <!-- Skill: JavaScript -->
+          <div class="skill-capsule-item" data-skill-id="javascript">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-brands fa-js skill-capsule-icon" style="color: #ffd600;"></i>
+                <span class="skill-capsule-name">JavaScript (ES6+)</span>
+              </div>
+              <span class="skill-capsule-badge">Core Engine</span>
+            </div>
+            <p class="skill-capsule-brief">Async/await pipelines, Fetch APIs, DOM manipulation, custom event dispatchers, and state handling.</p>
+          </div>
+
+          <!-- Skill: Git & GitHub -->
+          <div class="skill-capsule-item" data-skill-id="git">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-brands fa-git-alt skill-capsule-icon" style="color: #f05032;"></i>
+                <span class="skill-capsule-name">Git &amp; GitHub</span>
+              </div>
+              <span class="skill-capsule-badge">Workflow</span>
+            </div>
+            <p class="skill-capsule-brief">Version control discipline, repository architecture, branching strategies, and open-source collaboration.</p>
+          </div>
+
+          <!-- Skill: Python -->
+          <div class="skill-capsule-item" data-skill-id="python">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-brands fa-python skill-capsule-icon" style="color: #00e676;"></i>
+                <span class="skill-capsule-name">Python</span>
+              </div>
+              <span class="skill-capsule-badge">Algorithmic</span>
+            </div>
+            <p class="skill-capsule-brief">Algorithmic scripting, workflow automation, backend fundamentals, and structured computational logic.</p>
+          </div>
+
+          <!-- Skill: C++ -->
+          <div class="skill-capsule-item" data-skill-id="cpp">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-solid fa-code skill-capsule-icon" style="color: #a855f7;"></i>
+                <span class="skill-capsule-name">C++ Programming</span>
+              </div>
+              <span class="skill-capsule-badge">Systems</span>
+            </div>
+            <p class="skill-capsule-brief">Low-level memory discipline, pointer arithmetic, Object-Oriented design, and computational efficiency.</p>
+          </div>
+
+          <!-- Skill: DSA -->
+          <div class="skill-capsule-item" data-skill-id="dsa">
+            <div class="skill-capsule-header">
+              <div class="skill-capsule-icon-wrap">
+                <i class="fa-solid fa-brain skill-capsule-icon" style="color: #ff3366;"></i>
+                <span class="skill-capsule-name">Data Structures &amp; Algorithms</span>
+              </div>
+              <span class="skill-capsule-badge">Problem Solving</span>
+            </div>
+            <p class="skill-capsule-brief">Arrays, linked structures, recursion, searching/sorting algorithms, and asymptotic complexity analysis.</p>
+          </div>
+        </div>
+
+        <!-- Spotlight Detail Display Card -->
+        <div class="glass-panel skill-spotlight-display" id="skill-spotlight-display">
+          <div>
+            <div class="spotlight-tech-header">
+              <div class="spotlight-tech-icon" id="spotlight-icon">
+                <i class="fa-brands fa-html5"></i>
+              </div>
+              <div>
+                <h3 class="spotlight-tech-title" id="spotlight-title">HTML5 Architecture</h3>
+                <div class="spotlight-tech-tagline" id="spotlight-tagline">Semantic Web • Document Engineering</div>
+              </div>
+            </div>
+
+            <p class="spotlight-tech-desc" id="spotlight-desc">
+              Strong mastery of clean semantic markup, Web Content Accessibility Guidelines (WCAG), structured document trees, and search engine optimization fundamentals.
+            </p>
+
+            <div class="spotlight-topics-list" id="spotlight-topics">
+              <span class="spotlight-topic-pill">Semantic Elements</span>
+              <span class="spotlight-topic-pill">DOM Hierarchy</span>
+              <span class="spotlight-topic-pill">Accessibility (A11y)</span>
+              <span class="spotlight-topic-pill">SEO Best Practices</span>
+            </div>
+          </div>
+
+          <div class="spotlight-footer-hint">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Hover or tap any skill pill to view focused competencies.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 3: FEATURED MISSIONS / PROJECTS (48% - 76%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter chapter-missions" id="projects">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-rocket"></i> 03 // FEATURED MISSIONS</span>
+        <h2 class="section-title">Curated Builds &amp; <span class="gradient-text-cyan-red">Prototypes</span></h2>
+        <p class="section-subtitle">
+          Interactive projects engineered from scratch. Click <strong>"Live Holodeck Preview"</strong> to launch any project directly in an embedded interactive chamber without leaving this portfolio!
+        </p>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="missions-filter-row">
+        <button class="filter-chip active" data-filter="all">All Missions (6)</button>
+        <button class="filter-chip" data-filter="utility">Utilities &amp; APIs</button>
+        <button class="filter-chip" data-filter="web">Web &amp; Clones</button>
+        <button class="filter-chip" data-filter="interactive">Interactive UI</button>
+      </div>
+
+      <!-- Project Showcase Stage -->
+      <div class="project-showcase-stage">
+        <!-- Left: Project Selector List -->
+        <div class="project-selector-list" id="project-selector-list">
+          
+          <div class="project-selector-item active" data-proj-index="0" data-category="utility">
+            <div class="selector-meta-left">
+              <span class="selector-num">01</span>
+              <div>
+                <div class="selector-name">Computational Calculator</div>
+                <div class="selector-cat-tag">UTILITY • JAVASCRIPT ES6</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+          <div class="project-selector-item" data-proj-index="1" data-category="web">
+            <div class="selector-meta-left">
+              <span class="selector-num">02</span>
+              <div>
+                <div class="selector-name">Amazon Platform Clone</div>
+                <div class="selector-cat-tag">E-COMMERCE • RESPONSIVE CSS</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+          <div class="project-selector-item" data-proj-index="2" data-category="web">
+            <div class="selector-meta-left">
+              <span class="selector-num">03</span>
+              <div>
+                <div class="selector-name">Front-End Web Application</div>
+                <div class="selector-cat-tag">FULL ARCHITECTURE • MODERN UI</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+          <div class="project-selector-item" data-proj-index="3" data-category="interactive">
+            <div class="selector-meta-left">
+              <span class="selector-num">04</span>
+              <div>
+                <div class="selector-name">Tic Tac Toe Cyber Arena</div>
+                <div class="selector-cat-tag">STRATEGY GAME • MATRIX LOGIC</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+          <div class="project-selector-item" data-proj-index="4" data-category="interactive">
+            <div class="selector-meta-left">
+              <span class="selector-num">05</span>
+              <div>
+                <div class="selector-name">Dynamic Light Controller</div>
+                <div class="selector-cat-tag">STATE SWITCH • AMBIENT LIGHTING</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+          <div class="project-selector-item" data-proj-index="5" data-category="utility">
+            <div class="selector-meta-left">
+              <span class="selector-num">06</span>
+              <div>
+                <div class="selector-name">Meteorological Weather App</div>
+                <div class="selector-cat-tag">LIVE API • ASYNC JSON FETCH</div>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right selector-arrow"></i>
+          </div>
+
+        </div>
+
+        <!-- Right: Spotlight Featured Card -->
+        <div class="glass-panel project-featured-card" id="project-featured-card">
+          <div>
+            <div class="project-featured-header">
+              <span class="project-featured-badge" id="featured-badge">UTILITY APP</span>
+              <span class="project-featured-number" id="featured-number">01</span>
+            </div>
+
+            <h3 class="project-featured-title" id="featured-title">Computational Calculator</h3>
+
+            <p class="project-featured-desc" id="featured-desc">
+              A computational calculator engineered with clean vanilla JavaScript logic, keyboard event listeners, and glowing neon visual states for interactive numeric evaluation.
+            </p>
+
+            <div class="project-tech-badges" id="featured-tech-badges">
+              <span class="tech-badge-pill">HTML5</span>
+              <span class="tech-badge-pill">Vanilla CSS</span>
+              <span class="tech-badge-pill">JavaScript ES6</span>
+              <span class="tech-badge-pill">Keypad Handlers</span>
+            </div>
+          </div>
+
+          <div class="project-action-buttons">
+            <button class="btn-holodeck" id="featured-holodeck-btn">
+              <i class="fa-solid fa-eye"></i>
+              <span>LIVE HOLODECK PREVIEW</span>
+            </button>
+
+            <a href="project-1-calculator.html" target="_blank" class="btn-standalone" id="featured-standalone-btn" title="Open in Standalone Window">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <span>Open Standalone</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 4: EVOLUTION / JOURNEY (76% - 88%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter chapter-evolution" id="journey">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-timeline"></i> 04 // CHRONOLOGICAL LOG</span>
+        <h2 class="section-title">The Evolution <span class="gradient-text-cyan">Matrix</span></h2>
+        <p class="section-subtitle">
+          How a spark of curiosity in 10th standard evolved into engineering interactive 3D web environments, low-level algorithmic logic, and hackathon velocity.
+        </p>
+      </div>
+
+      <div class="evolution-timeline-track">
+        
+        <!-- 2023 -->
+        <div class="timeline-milestone-node">
+          <div class="milestone-beacon"></div>
+          <div class="glass-panel milestone-card">
+            <span class="milestone-year-tag">2023 // 10TH STANDARD</span>
+            <h3 class="milestone-heading">The Spark of Curiosity</h3>
+            <p class="milestone-body">
+              Began coding out of an innate curiosity to understand operating systems, software logic, and the web. Wrote first programming scripts and fell in love with turning logical ideas into living software.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2024 -->
+        <div class="timeline-milestone-node">
+          <div class="milestone-beacon"></div>
+          <div class="glass-panel milestone-card">
+            <span class="milestone-year-tag">2024 // FOUNDATIONS</span>
+            <h3 class="milestone-heading">HTML &amp; CSS Architectural Foundations</h3>
+            <p class="milestone-body">
+              Mastered semantic HTML5 structures, responsive CSS layouts, Flexbox, Grid, and visual design fundamentals. Built static web showcases with clean, maintainable code architectures.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2025 -->
+        <div class="timeline-milestone-node">
+          <div class="milestone-beacon"></div>
+          <div class="glass-panel milestone-card">
+            <span class="milestone-year-tag">2025 // INTERACTIVITY</span>
+            <h3 class="milestone-heading">Dynamic JavaScript &amp; DOM Engineering</h3>
+            <p class="milestone-body">
+              Dived deep into modern ES6+ JavaScript, event dispatchers, asynchronous API requests, and dynamic DOM manipulation. Built utility applications including computational calculators, state toggles, and live API feeds.
+            </p>
+          </div>
+        </div>
+
+        <!-- 2026 - PRESENT -->
+        <div class="timeline-milestone-node">
+          <div class="milestone-beacon"></div>
+          <div class="glass-panel milestone-card">
+            <span class="milestone-year-tag">2026 — PRESENT // FRONTIER</span>
+            <h3 class="milestone-heading">Algorithmic Rigor, C++, Python &amp; Modern Web Systems</h3>
+            <p class="milestone-body">
+              Enrolled in B.Tech Computer Science &amp; Engineering, leveling up in C++, Python, Data Structures &amp; Algorithms (DSA), and engineering high-performance web platforms for upcoming collegiate hackathons.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------------------
+         CHAPTER 5: TRANSMISSION & DIRECT CONTACT (88% - 100%)
+         --------------------------------------------------------------- -->
+    <section class="story-chapter chapter-transmission" id="contact">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-satellite-dish"></i> 05 // DIRECT TRANSMISSION</span>
+        <h2 class="section-title">Have an Idea? <span class="gradient-text-cyan-red">Let's Build It.</span></h2>
+        <p class="section-subtitle">
+          Interested in collaborating on a hackathon, discussing engineering internships, or exploring modern web technologies? Send a message directly.
+        </p>
+      </div>
+
+      <div class="transmission-climax-grid">
+        
+        <!-- Left: Transmission Channel Terminal / Dossier -->
+        <div class="glass-panel transmission-info-card" id="transmission-info-card">
+          <div class="transmission-info-header">
+            <div class="transmission-status-pill">
+              <span class="status-dot"></span>
+              <span>COMMUNICATION CHANNELS ONLINE</span>
+            </div>
+            <span class="transmission-freq-tag">ACTIVE 2026</span>
+          </div>
+
+          <div class="transmission-profile-preview">
+            <div class="transmission-avatar-wrap">
+              <img src="Nayan Image.jpg" alt="Nayan Gupta Portrait" class="transmission-avatar-img" />
+              <div class="transmission-avatar-badge" title="Hackathon Active">
+                <i class="fa-solid fa-code"></i>
+              </div>
+            </div>
+            <div class="transmission-identity-text">
+              <h3 class="transmission-identity-name">Nayan Gupta</h3>
+              <p class="transmission-identity-role">B.Tech Computer Science &amp; Engineering</p>
+              <p class="transmission-identity-bio">Open for collegiate hackathons, engineering internships, and modern web application development. Connect directly across any verified terminal channel below.</p>
+            </div>
+          </div>
+
+          <!-- Transmission Channels Grid -->
+          <div class="transmission-channels-row">
+            <a href="mailto:guptanayan3122@gmail.com" class="channel-pill" title="Send Email">
+              <div class="channel-icon-cube">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div>
+                <div class="channel-title">Direct Email</div>
+                <div class="channel-val">guptanayan3122@gmail.com</div>
+              </div>
+            </a>
+
+            <a href="https://github.com/GuptaNayan-X" target="_blank" rel="noopener noreferrer" class="channel-pill" title="GitHub Profile">
+              <div class="channel-icon-cube">
+                <i class="fa-brands fa-github"></i>
+              </div>
+              <div>
+                <div class="channel-title">GitHub</div>
+                <div class="channel-val">@GuptaNayan-X</div>
+              </div>
+            </a>
+
+            <a href="https://www.linkedin.com/in/nayan-gupta-13011a430/" target="_blank" rel="noopener noreferrer" class="channel-pill" title="LinkedIn Profile">
+              <div class="channel-icon-cube">
+                <i class="fa-brands fa-linkedin-in"></i>
+              </div>
+              <div>
+                <div class="channel-title">LinkedIn</div>
+                <div class="channel-val">nayan-gupta-13011a430</div>
+              </div>
+            </a>
+
+            <div class="channel-pill">
+              <div class="channel-icon-cube">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+              <div>
+                <div class="channel-title">Location &amp; Status</div>
+                <div class="channel-val" style="color: var(--emerald-accent);">India • Hackathon Ready</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="transmission-guarantee-note">
+            <i class="fa-solid fa-shield-halved" style="color: var(--cyan-primary);"></i>
+            <span>Direct encrypted transmission. Messages routed directly to primary inbox with rapid turnaround.</span>
+          </div>
+        </div>
+
+        <!-- Right: Contact Transmission Form -->
+        <div class="glass-panel contact-transmission-card">
+          <div class="form-card-header">
+            <div class="form-card-title-wrap">
+              <span class="status-dot"></span>
+              <h3 class="form-card-title">DISPATCH DIRECT MESSAGE</h3>
+            </div>
+            <span class="form-card-badge">FORMSPREE RELAY</span>
+          </div>
+
+          <!-- Formspree Contact Form -->
+          <form class="contact-form" id="contact-form" action="https://formspree.io/f/xaenebwk" method="POST">
+            <div class="form-group">
+              <label class="form-label" for="sender-name">Your Full Name</label>
+              <input class="form-input" type="text" id="sender-name" name="name" placeholder="e.g. Alex Turing" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sender-email">Your Email Address</label>
+              <input class="form-input" type="email" id="sender-email" name="email" placeholder="e.g. alex@example.com" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="sender-msg">Mission Proposal / Message</label>
+              <textarea class="form-textarea" id="sender-msg" name="message" placeholder="Type your hackathon invitation, internship proposal, or project inquiry..." required></textarea>
+            </div>
+
+            <button type="submit" class="form-submit-btn" id="submit-btn">
+              <span>DISPATCH TRANSMISSION</span>
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+
+          <!-- Success Overlay -->
+          <div class="form-success-overlay" id="form-success-overlay">
+            <div class="success-icon-ring">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 style="font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px;">Transmission Dispatched!</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">
+              Thank you for reaching out. Nayan Gupta has received your transmission and will reply promptly.
+            </p>
+            <button class="btn-primary" id="reset-form-btn" type="button">SEND ANOTHER MESSAGE</button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       HOLODECK PROJECT PREVIEW MODAL
+       =================================================================== -->
+  <div class="holodeck-modal" id="holodeck-modal" aria-hidden="true" role="dialog" aria-labelledby="holodeck-title">
+    <div class="holodeck-container">
+      <div class="holodeck-topbar">
+        <div class="holodeck-title-wrap">
+          <span class="holodeck-tag">HOLODECK // PREVIEW</span>
+          <h3 class="holodeck-title" id="holodeck-title">Project Title</h3>
+        </div>
+        <div class="holodeck-controls">
+          <a href="#" target="_blank" class="holodeck-btn" id="holodeck-open-external" title="Open in New Tab">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span>Open Standalone</span>
+          </a>
+          <button class="holodeck-close" id="holodeck-close-btn" title="Close Preview" aria-label="Close Preview Modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="holodeck-iframe-wrap">
+        <iframe src="" class="holodeck-iframe" id="holodeck-iframe" title="Interactive Project Preview"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       FOOTER
+       =================================================================== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        &copy; 2026 Nayan Gupta • B.Tech Computer Science &amp; Engineering
+      </div>
+      <div class="footer-tech">
+        Cinematic Engine: <span>240-Frame Canvas</span> &bull; <span>Modern CSS3</span> &bull; <span>Vanilla ES6+</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" title="Scroll to Top" aria-label="Back to Top">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <!-- Core Interactive Script -->
+  <script src="script.js"></script>
+</body>
+</html>
